@@ -50,6 +50,12 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Connection">
+      <HintPath>..\..\Connection\bin\x64\Debug\Connection.dll</HintPath>
+    </Reference>
+    <Reference Include="Cook_lib">
+      <HintPath>..\Cook_lib\bin\x64\Debug\Cook_lib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
