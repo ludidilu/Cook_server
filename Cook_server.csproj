@@ -67,7 +67,7 @@
     <Compile Include="config\Config.cs" />
     <Compile Include="config\ConfigDictionary.cs" />
     <Compile Include="csv\CsvBase.cs" />
-    <Compile Include="csv\sds\AuraSDS.cs" />
+    <Compile Include="csv\sds\DishSDS.cs" />
     <Compile Include="csv\StaticData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
