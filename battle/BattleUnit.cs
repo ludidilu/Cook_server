@@ -12,7 +12,7 @@ internal class BattleUnit
 
     private bool isVsAi;
 
-    internal BattleUnit(bool _isBattle)
+    internal BattleUnit()
     {
         cookServer = new Cook_server();
 
@@ -61,12 +61,12 @@ internal class BattleUnit
         }
     }
 
-    private void BattleOver(Battle.BattleResult _result)
-    {
-        mPlayer = oPlayer = null;
+    //private void BattleOver(Battle.BattleResult _result)
+    //{
+    //    mPlayer = oPlayer = null;
 
-        BattleManager.Instance.BattleOver(this);
-    }
+    //    BattleManager.Instance.BattleOver(this);
+    //}
 
     internal void Logout(UnitBase _playerUnit)
     {
@@ -80,62 +80,7 @@ internal class BattleUnit
 
                 using (BinaryReader br = new BinaryReader(ms))
                 {
-                    battle.ServerGetPackage(br, _playerUnit == mPlayer, false);
-                }
-            }
-        }
-    }
-
-    internal void Update(long _tick)
-    {
-        if (_tick - mTick > MAX_TICK)
-        {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                using (BinaryWriter bw = new BinaryWriter(ms))
-                {
-                    mTick = _tick;
-
-                    bw.Write(PackageTag.C2S_DOACTION);
-
-                    bw.Write(battle.roundNum);
-
-                    bw.Write(0);
-
-                    bw.Write(0);
-
-                    ms.Position = 0;
-
-                    using (BinaryReader br = new BinaryReader(ms))
-                    {
-                        battle.ServerGetPackage(br, true, false);
-                    }
-                }
-            }
-        }
-
-        if (!isVsAi && (_tick - oTick > MAX_TICK))
-        {
-            using (MemoryStream ms = new MemoryStream())
-            {
-                using (BinaryWriter bw = new BinaryWriter(ms))
-                {
-                    oTick = _tick;
-
-                    bw.Write(PackageTag.C2S_DOACTION);
-
-                    bw.Write(battle.roundNum);
-
-                    bw.Write(0);
-
-                    bw.Write(0);
-
-                    ms.Position = 0;
-
-                    using (BinaryReader br = new BinaryReader(ms))
-                    {
-                        battle.ServerGetPackage(br, false, false);
-                    }
+                    cookServer.ServerGetPackage(_playerUnit == mPlayer, br);
                 }
             }
         }

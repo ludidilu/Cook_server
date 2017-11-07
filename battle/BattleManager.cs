@@ -34,13 +34,7 @@ internal class BattleManager
         }
     }
 
-    private const int mapID = 2;
-
-    private const bool isBattle = true;
-
-    private Queue<BattleUnit> battleUnitPool1 = new Queue<BattleUnit>();
-
-    private Queue<BattleUnit> battleUnitPool2 = new Queue<BattleUnit>();
+    private Queue<BattleUnit> battleUnitPool = new Queue<BattleUnit>();
 
     private Dictionary<BattleUnit, List<UnitBase>> battleList = new Dictionary<BattleUnit, List<UnitBase>>();
 
@@ -155,7 +149,7 @@ internal class BattleManager
                 }
                 else
                 {
-                    battleUnit = GetBattleUnit(isBattle);
+                    battleUnit = GetBattleUnit();
 
                     UnitBase tmpPlayer = lastPlayer;
 
@@ -167,11 +161,11 @@ internal class BattleManager
 
                     battleList.Add(battleUnit, new List<UnitBase>() { _playerUnit, tmpPlayer });
 
-                    mCards = StaticData.GetData<TestCardsSDS>(1).cards;
+                    mCards = new List<int>();
 
-                    oCards = StaticData.GetData<TestCardsSDS>(2).cards;
+                    oCards = new List<int>();
 
-                    battleUnit.Init(_playerUnit, tmpPlayer, mCards, oCards, mapID, false, _tick);
+                    battleUnit.Init(_playerUnit, tmpPlayer, mCards, oCards, false);
 
                     ReplyClient(_playerUnit, false, PlayerState.BATTLE);
 
@@ -187,17 +181,17 @@ internal class BattleManager
                     lastPlayer = null;
                 }
 
-                battleUnit = GetBattleUnit(isBattle);
+                battleUnit = GetBattleUnit();
 
                 battleListWithPlayer.Add(_playerUnit, battleUnit);
 
                 battleList.Add(battleUnit, new List<UnitBase>() { _playerUnit });
 
-                mCards = StaticData.GetData<TestCardsSDS>(1).cards;
+                mCards = new List<int>();
 
-                oCards = StaticData.GetData<TestCardsSDS>(2).cards;
+                oCards = new List<int>();
 
-                battleUnit.Init(_playerUnit, null, mCards, oCards, mapID, true, _tick);
+                battleUnit.Init(_playerUnit, null, mCards, oCards, true);
 
                 ReplyClient(_playerUnit, false, PlayerState.BATTLE);
 
@@ -248,21 +242,17 @@ internal class BattleManager
         ReleaseBattleUnit(_battleUnit);
     }
 
-    private BattleUnit GetBattleUnit(bool _isBattle)
+    private BattleUnit GetBattleUnit()
     {
         BattleUnit battleUnit;
 
-        if (_isBattle && battleUnitPool1.Count > 0)
+        if (battleUnitPool.Count > 0)
         {
-            battleUnit = battleUnitPool1.Dequeue();
-        }
-        else if (!_isBattle && battleUnitPool2.Count > 0)
-        {
-            battleUnit = battleUnitPool2.Dequeue();
+            battleUnit = battleUnitPool.Dequeue();
         }
         else
         {
-            battleUnit = new BattleUnit(_isBattle);
+            battleUnit = new BattleUnit();
         }
 
         return battleUnit;
@@ -270,23 +260,6 @@ internal class BattleManager
 
     private void ReleaseBattleUnit(BattleUnit _battleUnit)
     {
-        if (_battleUnit.isBattle)
-        {
-            battleUnitPool1.Enqueue(_battleUnit);
-        }
-        else
-        {
-            battleUnitPool2.Enqueue(_battleUnit);
-        }
-    }
-
-    internal void Update(long _tick)
-    {
-        IEnumerator<BattleUnit> enumerator = battleList.Keys.GetEnumerator();
-
-        while (enumerator.MoveNext())
-        {
-            enumerator.Current.Update(_tick);
-        }
+        battleUnitPool.Enqueue(_battleUnit);
     }
 }
