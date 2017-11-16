@@ -262,4 +262,14 @@ internal class BattleManager
     {
         battleUnitPool.Enqueue(_battleUnit);
     }
+
+    internal void Update()
+    {
+        IEnumerator<BattleUnit> enumerator = battleList.Keys.GetEnumerator();
+
+        while (enumerator.MoveNext())
+        {
+            enumerator.Current.Update();
+        }
+    }
 }

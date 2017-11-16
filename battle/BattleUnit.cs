@@ -85,4 +85,9 @@ internal class BattleUnit
             }
         }
     }
+
+    internal void Update()
+    {
+        cookServer.ServerUpdateTo();
+    }
 }

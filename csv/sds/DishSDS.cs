@@ -1,17 +1,15 @@
 ﻿using Cook_lib;
 
-public class DishSDS : CsvBase, IDishSDS
+public partial class DishSDS : CsvBase, IDishSDS
 {
     public float prepareTime;
     public float prepareDecreaseValue;
     public float cookTime;
-    public float optimizedTime;
+    public float optimizeTime;
     public float optimizeDecreaseValue;
-    public float exceedTime;
-    public bool isUniversal;
-    public int maxNum;
-    public int money;
-    public int moneyOptimized;
+    public int resultID;
+
+    private ResultSDS resultSDS;
 
     public int GetID()
     {
@@ -35,7 +33,7 @@ public class DishSDS : CsvBase, IDishSDS
 
     public float GetOptimizeTime()
     {
-        return optimizedTime;
+        return optimizeTime;
     }
 
     public float GetOptimizeDecreaseValue()
@@ -43,27 +41,13 @@ public class DishSDS : CsvBase, IDishSDS
         return optimizeDecreaseValue;
     }
 
-    public float GetExceedTime()
+    public IResultSDS GetResult()
     {
-        return exceedTime;
-    }
+        if (resultSDS == null)
+        {
+            resultSDS = StaticData.GetData<ResultSDS>(resultID);
+        }
 
-    public bool GetIsUniversal()
-    {
-        return isUniversal;
-    }
-    public int GetMaxNum()
-    {
-        return maxNum;
-    }
-
-    public int GetMoney()
-    {
-        return money;
-    }
-
-    public int GetMoneyOptimized()
-    {
-        return moneyOptimized;
+        return resultSDS;
     }
 }
