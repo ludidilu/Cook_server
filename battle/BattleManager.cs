@@ -161,9 +161,9 @@ internal class BattleManager
 
                     battleList.Add(battleUnit, new List<UnitBase>() { _playerUnit, tmpPlayer });
 
-                    mCards = new List<int>();
+                    mCards = new List<int>() { 1, 2, 3, 4, 5 };
 
-                    oCards = new List<int>();
+                    oCards = new List<int>() { 1, 2, 3, 4, 5 };
 
                     battleUnit.Init(_playerUnit, tmpPlayer, mCards, oCards, false);
 
