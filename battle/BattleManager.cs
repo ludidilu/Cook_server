@@ -40,6 +40,8 @@ internal class BattleManager
 
     private Dictionary<UnitBase, BattleUnit> battleListWithPlayer = new Dictionary<UnitBase, BattleUnit>();
 
+    private List<BattleUnit> delList = new List<BattleUnit>();
+
     private UnitBase lastPlayer = null;
 
     internal byte[] Login(UnitBase _playerUnit)
@@ -228,20 +230,6 @@ internal class BattleManager
         }
     }
 
-    internal void BattleOver(BattleUnit _battleUnit)
-    {
-        List<UnitBase> tmpList = battleList[_battleUnit];
-
-        for (int i = 0; i < tmpList.Count; i++)
-        {
-            battleListWithPlayer.Remove(tmpList[i]);
-        }
-
-        battleList.Remove(_battleUnit);
-
-        ReleaseBattleUnit(_battleUnit);
-    }
-
     private BattleUnit GetBattleUnit()
     {
         BattleUnit battleUnit;
@@ -269,7 +257,37 @@ internal class BattleManager
 
         while (enumerator.MoveNext())
         {
-            enumerator.Current.Update();
+            bool b = enumerator.Current.Update();
+
+            if (b)
+            {
+                delList.Add(enumerator.Current);
+            }
+        }
+
+        if (delList.Count > 0)
+        {
+            for (int i = 0; i < delList.Count; i++)
+            {
+                BattleOver(delList[i]);
+            }
+
+            delList.Clear();
         }
     }
+
+    private void BattleOver(BattleUnit _battleUnit)
+    {
+        List<UnitBase> tmpList = battleList[_battleUnit];
+
+        for (int i = 0; i < tmpList.Count; i++)
+        {
+            battleListWithPlayer.Remove(tmpList[i]);
+        }
+
+        battleList.Remove(_battleUnit);
+
+        ReleaseBattleUnit(_battleUnit);
+    }
+
 }

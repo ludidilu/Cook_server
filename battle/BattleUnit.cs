@@ -16,7 +16,7 @@ internal class BattleUnit
     {
         cookServer = new Cook_server();
 
-        cookServer.ServerSetCallBack(SendData, BattleOver);
+        cookServer.ServerSetCallBack(SendData);
     }
 
     internal void Init(UnitBase _mPlayer, UnitBase _oPlayer, IList<int> _mDish, IList<int> _oDish, bool _isVsAi)
@@ -61,13 +61,6 @@ internal class BattleUnit
         }
     }
 
-    private void BattleOver(GameResult _result)
-    {
-        mPlayer = oPlayer = null;
-
-        BattleManager.Instance.BattleOver(this);
-    }
-
     internal void Logout(UnitBase _playerUnit)
     {
         using (MemoryStream ms = new MemoryStream())
@@ -86,8 +79,19 @@ internal class BattleUnit
         }
     }
 
-    internal void Update()
+    internal bool Update()
     {
-        cookServer.ServerUpdateTo();
+        GameResult gameResult = cookServer.ServerUpdateTo();
+
+        if (gameResult != GameResult.NOT_OVER)
+        {
+            mPlayer = oPlayer = null;
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
