@@ -85,6 +85,8 @@ internal class BattleUnit
 
         if (gameResult != GameResult.NOT_OVER)
         {
+            Cook_lib.Log.Write("gameover:" + gameResult);
+
             mPlayer = oPlayer = null;
 
             return true;

@@ -289,5 +289,4 @@ internal class BattleManager
 
         ReleaseBattleUnit(_battleUnit);
     }
-
 }
